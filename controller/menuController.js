@@ -1,0 +1,39 @@
+const Menu = require('../model/menuModel')
+
+const MenuController = {
+    getMenu : async ( req, res) => {
+        const menuList = await Menu.find()
+        return res.json({
+            data : menuList
+        })
+    },
+
+    createMenu : async (req, res) =>{
+        const { menu, price, quantity, description} = req.body ;
+        const createMenu = await Menu.create({menu, price, quantity, description});
+        return res.json({
+            msg: "Menu created successfully!",
+            data : createMenu
+        })
+    },
+
+    updateMenu : async (req, res) =>{
+        const{id} = req.body;
+        const updateMenu = await Menu.findByIdAndUpdate(id, {...req.body});
+        return res.json({
+            msg : "Menu updated successfully!",
+            data: updateMenu
+        })
+    },
+
+    deleteMenu : async (req, res) =>{
+        const { id} = req.body;
+        const deleteMenu = await Menu.findByIdAndDelete(id);
+        return res.json ({
+            msg: "Menu deleted successfully!",
+           
+        })
+    }
+}
+
+module.exports = MenuController

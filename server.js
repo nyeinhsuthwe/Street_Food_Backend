@@ -4,6 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 const morgan = require('morgan');
 const menuRouter = require('./routes/menu')
+const path = require('path');
 
 const app = express();
 
@@ -15,10 +16,11 @@ mongoose.connect(mongoURL).then(()=>{
 })
 });
 
+app.use(express.static("public"));
 app.use(cors({
-    origin : 'localhost:5173',
-    methods : ["POST", "GET", "PUT", "PATCH", "DELETE"]
-}))
+  origin: 'http://localhost:5173',
+  methods: ["POST", "GET", "PUT", "PATCH", "DELETE"]
+}));
 
 app.use(morgan(`dev`));
 app.use(express.json());

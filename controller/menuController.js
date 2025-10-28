@@ -9,9 +9,9 @@ const MenuController = {
     },
 
     createMenu: async (req, res) => {
-        const { menu, price, quantity, description} = req.body;
+        const { menu, price, description, category_id} = req.body;
          const photo = req.file ? req.file.filename : null;
-        const createMenu = await Menu.create({ menu, price, quantity, description,photo });
+        const createMenu = await Menu.create({ menu, price, description,photo,category_id });
         return res.json({
             msg: "Menu created successfully!",
             data: createMenu

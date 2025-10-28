@@ -1,9 +1,10 @@
 const express = require('express');
-const MenuController = require('../controller/menuController');
+const categoryController = require('../controller/categoryController');
 const multer = require("multer");
 const path = require("path");
 const router = express.Router();
 const { body } = require('express-validator');
+
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, 'uploads/'),
@@ -12,10 +13,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.get('/get-menu-list', MenuController.getMenu);
-router.post('/create-menu', upload.single('photo'), MenuController.createMenu);
-router.patch('/update-menu/:id', MenuController.updateMenu);
-router.delete('/delete-menu/:id', MenuController.deleteMenu);
+router.post('/create-category', upload.single('photo'), categoryController.createCategory);
+
 router.post(
   '/:id/upload',
   [
@@ -26,7 +25,11 @@ router.post(
       return true;
     }),
   ],
-  MenuController.upload
+  categoryController.upload
 );
 
+router.get('/get-category-list', categoryController.getCategoryList);
+router.delete('/delete-category/:id', categoryController.deleteCategory);
+
 module.exports = router
+

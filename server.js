@@ -4,6 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 const morgan = require('morgan');
 const menuRouter = require('./routes/menu')
+const categoryRouter = require('./routes/category')
 const path = require('path');
 
 const app = express();
@@ -27,3 +28,4 @@ app.use(express.json());
 app.use("/api/uploads", express.static("uploads"));
 
 app.use('/api', menuRouter);
+app.use('/api', categoryRouter)

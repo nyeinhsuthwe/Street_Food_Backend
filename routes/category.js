@@ -30,6 +30,7 @@ router.post(
 
 router.get('/get-category-list', categoryController.getCategoryList);
 router.delete('/delete-category/:id', categoryController.deleteCategory);
+router.put('/update-category/:id',upload.single('photo'), categoryController.updateCategory)
 
 module.exports = router
 

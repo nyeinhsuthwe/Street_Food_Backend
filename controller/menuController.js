@@ -29,6 +29,7 @@ const MenuController = {
 
     deleteMenu: async (req, res) => {
         const { id } = req.params;
+        console.log(id)
         const deleteMenu = await Menu.findByIdAndDelete(id);
         return res.json({
             msg: "Menu deleted successfully!",

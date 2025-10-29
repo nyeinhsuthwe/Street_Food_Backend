@@ -65,7 +65,7 @@ const categoryController = {
     try {
       const { id } = req.params;
 
-      const menu = await Menu.findByIdAndUpdate(id, {
+      const menu = await Category.findByIdAndUpdate(id, {
         photo: req.file.filename,
       });
 

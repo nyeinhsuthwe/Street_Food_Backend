@@ -12,12 +12,8 @@ const MenuSchema = new schema(
       type: Number,
       required: true,
     },
-    rating: {
-      type: Number,
-    },
     description: {
       type: String,
-      required: true,
     },
     photo: {
       type: String,

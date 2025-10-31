@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const menuRouter = require('./routes/menu')
 const categoryRouter = require('./routes/category')
 const path = require('path');
+const authRouter = require('./routes/auth')
 
 const app = express();
 
@@ -28,6 +29,6 @@ app.use(morgan(`dev`));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/uploads", express.static("uploads"));
-
 app.use('/api', menuRouter);
 app.use('/api', categoryRouter)
+app.use('/api', authRouter)

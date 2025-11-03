@@ -2,10 +2,31 @@ const Menu = require("../model/menuModel");
 
 const MenuController = {
   getMenu: async (req, res) => {
-    const menuList = await Menu.find();
-    return res.json({
+    try {
+
+      const pageNo = parseInt(req.query.pageNo) || 1 ;
+      const pageSize = parseInt(req.query.pageSize) || 10;
+      const categoryId = req.query.category_id || null;
+
+      const filter = categoryId ? {category_id : categoryId} : {};
+      const totalCount = await Menu.countDocuments(filter);
+
+      const menuList = await Menu.find(filter)
+      .skip((pageNo-1)*pageSize)
+      .limit(pageSize)
+      .sort({ createdAt: -1 });
+
+      return res.json({
       data: menuList,
+      currentPage: pageNo,
+      totalPages: Math.ceil(totalCount / pageSize),
+      totalItems: totalCount,
     });
+      
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+   
   },
 
   createMenu: async (req, res) => {

@@ -17,6 +17,11 @@ const UserSchema = new schema({
     type: String,
     required: true,
   },
+  role : {
+    type : String,
+    enum : ["user", "admin"],
+    default : "user",
+  }
 });
 
 UserSchema.statics.register = async function (name, email, password) {

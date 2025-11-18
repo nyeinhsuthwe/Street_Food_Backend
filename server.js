@@ -5,13 +5,14 @@ require("dotenv").config();
 const morgan = require("morgan");
 const menuRouter = require("./routes/menu");
 const categoryRouter = require("./routes/category");
-const path = require("path");
 const authRouter = require("./routes/auth");
+const orderRouter = require("./routes/order")
 const cookieParser = require("cookie-parser");
 const requireAuth = require("./middlewares/requireAuth");
 const authorizeRole = require("./middlewares/authorizeRole");
 const User = require("./model/userModel");
 const bycrypt = require("bcrypt");
+const handleErrorMessage = require("./middlewares/handleErrorMessage");
 
 const app = express();
 
@@ -37,6 +38,7 @@ mongoose.connect(mongoURL).then(async() => {
   app.listen(process.env.PORT, () => {
     console.log(`app is running on ${process.env.PORT}`);
   });
+  
 });
 
 app.use(express.static("public"));
@@ -53,7 +55,8 @@ app.use(morgan(`dev`));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
-app.use("/api/uploads", express.static("uploads"));
-app.use("/api", menuRouter);
-app.use("/api", categoryRouter);
 app.use("/api", authRouter);
+app.use("/api/uploads", express.static("uploads"));
+app.use("/api",requireAuth, menuRouter);
+app.use("/api",requireAuth, categoryRouter);
+app.use("/api",requireAuth, orderRouter);

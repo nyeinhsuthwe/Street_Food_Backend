@@ -20,11 +20,11 @@ const MenuSchema = new schema(
     },
     category_id: {
       type: schema.Types.ObjectId,
-      ref: "category",
+      ref: "Category",
       required: true,
     },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("menu", MenuSchema);
+module.exports = mongoose.model("Menu", MenuSchema);

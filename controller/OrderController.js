@@ -6,7 +6,7 @@ const OrderController = {
 
     createOrder: async (req, res) => {
         try {
-              console.log("Request body:", req.body);
+            console.log("Request body:", req.body);
             const { user_id, items, paymentMethod, deliveryType, address, fullname, phone } = req.body;
             const orderItems = []
             const user = await User.findById(user_id)
@@ -38,7 +38,6 @@ const OrderController = {
                 paymentMethod,
                 deliveryType,
                 address,
-                fullname,
                 phone
             });
             return res.json({
@@ -108,6 +107,42 @@ const OrderController = {
         } catch (error) {
             console.error("Update order status error:", error);
             res.status(500).json({ message: "Failed to update order status" });
+        }
+    },
+
+    orderHistory: async (req, res) => {
+        try {
+
+            const user_id = req.user._id;
+            const pageNo = parseInt(req.query.pageNo) || 1;
+            const pageSize = parseInt(req.query.pageSize) || 10;
+
+            if (!user_id) {
+                return res.status(400).json({ message: "User ID is required" });
+            }
+
+            const query = {
+                user_id,
+            };
+
+            const totalCount = await Order.countDocuments(query)
+
+            const orders = await Order.find(query)
+                .populate("items.menu_id", "menu price")
+                .sort({ createdAt: -1 })
+                .skip((pageNo - 1) * pageSize)
+                .limit(pageSize);
+
+
+            return res.json({
+                orders,
+                currentPage: pageNo,
+                totalPages: Math.ceil(totalCount / pageSize),
+                totalItems: totalCount
+            });
+
+        } catch (error) {
+            return res.status(500).json({ message: "Failed to fetch user orders" });
         }
     }
 

@@ -32,7 +32,7 @@ const OrderSchema = new schema({
     ],
     paymentMethod: {
       type: String,
-      enum: ["cash", "card", "mobile"],
+      enum: ["cash", "card", "kbzpay", "wavepay"],
       default: "mobile",
     },
     status: { 
